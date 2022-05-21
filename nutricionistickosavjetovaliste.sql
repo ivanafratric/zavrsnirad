@@ -4,21 +4,11 @@ drop database if exists nutricionistickosavjetovaliste;
 create database nutricionistickosavjetovaliste;
 use nutricionistickosavjetovaliste;
 
-create table savjetovaliste(
-    sifra int not null primary key auto_increment,
-    naziv varchar(50) not null,
-    adresa varchar(50) not null,
-    telefon varchar(20) not null,
-    email varchar(50) not null,
-    opis varchar(500)
-);
-
 create table usluga(
     sifra int not null primary key auto_increment,
     nazivusluge varchar(50) not null,
     cijena decimal(18,2) not null,
-    opisusluge varchar(500),
-    savjetovaliste int not null
+    opisusluge varchar(500)
 );
 
 create table klijent(
@@ -30,37 +20,35 @@ create table klijent(
     nalaz varchar(200)
 );
 
-create table radionicakuhanja(
+create table radionica(
     sifra int not null primary key auto_increment,
+    vrstaradionice varchar(100) not null,
     naziv varchar(50) not null,
     opis varchar(200),
     cijena decimal(18,2) not null,
-    datumpocetka datetime not null,
-    datumzavrsetka datetime,
+    od datetime not null,
+    do datetime,
     maksimalanbrojpolaznika int  
 );
 
-create table radionicajoge(
+create table posjeta(
     sifra int not null primary key auto_increment,
-    naziv varchar(50) not null,
-    opis varchar(200),
-    cijena decimal(18,2) not null,
-    datumpocetka datetime not null,
-    datumzavrsetka datetime,
-    maksimalanbrojpolaznika int
+    klijent int not null,
+    od datetime not null,
+    do datetime not null,
+    radionica int not null
 );
 
 create table clan(
     sifra int not null primary key auto_increment,
-    klijent int not null,
-    usluga int not null,
-    radionicakuhanja int not null,
-    radionicajoge int not null
+    posjeta int not null,
+    usluga int not null
 );
 
-alter table usluga add foreign key (savjetovaliste) references savjetovaliste(sifra);
+alter table posjeta add foreign key (klijent) references klijent(sifra);
+alter table posjeta add foreign key (radionica) references radionica(sifra);
 
-alter table clan add foreign key (klijent) references klijent(sifra);
+alter table clan add foreign key (posjeta) references posjeta(sifra);
 alter table clan add foreign key (usluga) references usluga(sifra);
-alter table clan add foreign key (radionicakuhanja) references radionicakuhanja(sifra);
-alter table clan add foreign key (radionicajoge) references radionicajoge(sifra);
+
+
