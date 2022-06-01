@@ -1,8 +1,8 @@
-# C:\xampp\mysql\bin\mysql -uroot --default_character_set=utf8 < C:\Users\38591\Documents\github\zavrsnirad\nutricionistickosavjetovaliste.sql
+# C:\xampp\mysql\bin\mysql -uroot --default_character_set=utf8 < C:\Users\38591\Documents\github\zavrsnirad\nutrisavjet.sql
 
-drop database if exists nutricionistickosavjetovaliste;
-create database nutricionistickosavjetovaliste;
-use nutricionistickosavjetovaliste;
+drop database if exists nutrisavjet;
+create database nutrisavjet;
+use nutrisavjet;
 
 create table usluga(
     sifra int not null primary key auto_increment,
@@ -16,9 +16,8 @@ create table klijent(
     ime varchar(20) not null,
     prezime varchar(20) not null,
     oib char(11) not null,
-    kontakt varchar(50) not null,
-    nalaz varchar(200)
-);
+    kontakt varchar(50) not null
+    );
 
 create table radionica(
     sifra int not null primary key auto_increment,
@@ -34,12 +33,12 @@ create table radionica(
 create table posjeta(
     sifra int not null primary key auto_increment,
     klijent int not null,
-    od datetime not null,
-    do datetime not null,
+    datum datetime not null,
+    nalaz varchar(200),
     radionica int not null
 );
 
-create table clan(
+create table dolazak(
     sifra int not null primary key auto_increment,
     posjeta int not null,
     usluga int not null
@@ -48,7 +47,7 @@ create table clan(
 alter table posjeta add foreign key (klijent) references klijent(sifra);
 alter table posjeta add foreign key (radionica) references radionica(sifra);
 
-alter table clan add foreign key (posjeta) references posjeta(sifra);
-alter table clan add foreign key (usluga) references usluga(sifra);
+alter table dolazak add foreign key (posjeta) references posjeta(sifra);
+alter table dolazak add foreign key (usluga) references usluga(sifra);
 
 
